@@ -1,0 +1,2162 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: NV-SSV-EG
+      folder: SSV
+      interval: 1m
+      rules:
+         - uid: ce1cb4bc-462c-4225-847c-0d4ebd3372ff
+          title: CPU Usage
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                expr: avg(1 - avg(rate(node_cpu_seconds_total{origin_prometheus=~"",job=~"node_exporter",mode="idle"}[2m])) by (instance)) * 100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall average used%
+                maxDataPoints: 43200
+                refId: A
+                step: 240
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 7
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "7"
+            description: CPU Usage is {{ $values.B }} %
+            summary: NV-SSV-NonProd CPU Usage Alert
+          isPaused: false
+        - uid: b1d341e2-2e7f-47d2-a222-97a28101ba99
+          title: Memory Usage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                expr: (sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"} - node_memory_MemAvailable_bytes{origin_prometheus=~"",job=~"node_exporter"}) / sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"}))*100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 195
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "195"
+            description: Memory usage is {{ $values.B }} %
+            summary: NV-SSV-NonProd Memory usage
+          isPaused: false
+        - uid: e659d834-441e-4eba-82cd-d178a2e78abc
+          title: Total Disk Usage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                expr: (sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))) *100/(sum(avg(node_filesystem_avail_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))+(sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))))
+                format: time_series
+                instant: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 197
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "197"
+            description: Disk usage is {{ $values.B }} %
+            summary: NV-SSV-NonProd Disk usage
+          isPaused: false
+        - uid: ae897e23-edde-4d23-9400-a63b1de3617c
+          title: NV-SSV_Beacon_Node
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                editorMode: code
+                expr: ssv_beacon_status
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 2
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: SSVNonProd
+          panelId: 48
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: SSVNonProd
+            __panelId__: "48"
+            summary: The instance has been down for more than 30 seconds.
+          isPaused: false
+        - uid: a24bbae7-028d-4128-bc15-f77bc2b1b83b
+          title: NV-Geth_Alert
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                editorMode: code
+                expr: ssv_eth1_status
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0.99
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: SSVNonProd
+          panelId: 46
+          noDataState: Alerting
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: SSVNonProd
+            __panelId__: "46"
+            summary: SSV_ETH_Status
+          isPaused: false
+        - uid: adf1fdfc-4229-4eeb-bdba-4a03d2e67291
+          title: NV-SSV_Node_Status
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                editorMode: code
+                expr: ssv_node_status + 1
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: SSVNonProd
+          panelId: 44
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: SSVNonProd
+            __panelId__: "44"
+            summary: SSV node is down
+          isPaused: false
+        - uid: f81350e9-7ed6-4f9d-ae27-83114658f9ba
+          title: NV-SSV_Node_Error
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                editorMode: code
+                expr: ssv_node_status + 1
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 2
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: SSVNonProd
+          panelId: 44
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: SSVNonProd
+            __panelId__: "44"
+            summary: SSV_Node is Facing an Error
+          isPaused: false
+        - uid: b46aca79-171b-440b-a766-58aceb6bc3f8
+          title: NV-SSV_Node_P2p
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                editorMode: code
+                expr: ssv_p2p_all_connected_peers
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 60
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 5
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: SSVNonProd
+          panelId: 52
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: SSVNonProd
+            __panelId__: "52"
+            description: SSV operator peers
+            summary: SSV Operator node peers is {{'{{ '"$"}}values.B }} .
+          isPaused: false
+    - orgId: 1
+      name: NV-Geth-EG
+      folder: Geth
+      interval: 1m
+      rules:
+        - uid: ee7bf2a7-1f10-4071-9ad4-fc9668bbb806
+          title: NV-Geth-CPU
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: P1F4154E63E9E5551
+              model:
+                adhocFilters: []
+                alias: system
+                datasource:
+                    type: influxdb
+                    uid: P1F4154E63E9E5551
+                expr: system_cpu_sysload
+                format: time_series
+                groupBy:
+                    - params:
+                        - $interval
+                      type: time
+                intervalFactor: 1
+                intervalMs: 1000
+                legendFormat: system
+                limit: ""
+                maxDataPoints: 43200
+                measurement: geth.system/cpu/sysload.gauge
+                orderByTime: ASC
+                policy: default
+                query: SELECT mean("value") FROM "autogen"."geth.system/cpu/sysload.gauge" WHERE ("host" =~ /^localhost$/) AND $timeFilter GROUP BY time(5m)
+                rawQuery: true
+                refId: A
+                resultFormat: time_series
+                select:
+                    - - params:
+                            - value
+                        type: field
+                      - params: []
+                        type: mean
+                slimit: ""
+                tags:
+                    - key: host
+                      operator: =~
+                      value: /^localhost$/
+                tz: ""
+            - refId: B
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - E
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 2
+                            - 0
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: NCVGethSSVNonProd
+          panelId: 106
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: NCVGethSSVNonProd
+            __panelId__: "106"
+            description: Geth CPU Alert
+            summary: Geth cpu is {{'{{ '"$"}}values.B }} %
+          isPaused: false
+        - uid: ef4c0cec-e39d-41e7-9b6e-060f75a4b137
+          title: NV-Geth-Peers
+          condition: E
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: P1F4154E63E9E5551
+              model:
+                adhocFilters: []
+                alias: peers
+                datasource:
+                    type: influxdb
+                    uid: P1F4154E63E9E5551
+                expr: p2p_peers
+                format: time_series
+                groupBy:
+                    - params:
+                        - $interval
+                      type: time
+                intervalFactor: 1
+                intervalMs: 1000
+                legendFormat: peers
+                limit: ""
+                maxDataPoints: 43200
+                measurement: geth.p2p/peers.gauge
+                orderByTime: ASC
+                policy: default
+                query: SELECT median("value") FROM "autogen"."geth.p2p/peers.gauge" WHERE ("host" =~ /^localhost$/) AND $timeFilter GROUP BY time(5m)
+                rawQuery: true
+                refId: A
+                resultFormat: time_series
+                select:
+                    - - params:
+                            - value
+                        type: field
+                      - params: []
+                        type: median
+                slimit: ""
+                tags:
+                    - key: host
+                      operator: =~
+                      value: /^localhost$/
+                tz: ""
+            - refId: D
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: D
+                type: reduce
+            - refId: E
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 5
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - E
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: D
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: E
+                type: threshold
+          dashboardUid: GethSSVNonProd
+          panelId: 77
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: GethSSVNonProd
+            __panelId__: "77"
+            description: Geth peers
+            summary: Geth peers is {{'{{ '"$"}}values.B }}
+          isPaused: false
+        - uid: bfbd1332-fb50-475f-9b5f-f3ae81b521ef
+          title: NV-Geth-Block-Number
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: P1F4154E63E9E5551
+              model:
+                datasource:
+                    type: influxdb
+                    uid: P1F4154E63E9E5551
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                query: SELECT "value" FROM "autogen"."geth.chain/head/block.gauge" WHERE ("host" =~ /^localhost$/) AND time >= now() - 2m and time <= now()
+                rawQuery: true
+                refId: A
+                resultFormat: time_series
+            - refId: B
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: GethSSVNonProd
+            __panelId__: "109"
+            description: Latest Block Number
+            summary: Block Value is Zero
+          isPaused: false
+        - uid: c92d464d-65f0-48ab-b65d-c5bf273f21a6
+          title: NV-Geth-Memory
+          condition: c
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: P1F4154E63E9E5551
+              model:
+                adhocFilters: []
+                alias: used
+                datasource:
+                    type: influxdb
+                    uid: P1F4154E63E9E5551
+                expr: system_cpu_syswait
+                format: time_series
+                groupBy:
+                    - params:
+                        - $interval
+                      type: time
+                intervalFactor: 1
+                intervalMs: 1000
+                legendFormat: iowait
+                limit: ""
+                maxDataPoints: 43200
+                measurement: geth.system/memory/used.gauge
+                orderByTime: ASC
+                policy: default
+                query: SELECT mean("value") FROM "autogen"."geth.system/memory/used.gauge" WHERE ("host" =~ /^localhost$/) AND $timeFilter GROUP BY time(5m)
+                rawQuery: true
+                refId: A
+                resultFormat: time_series
+                select:
+                    - - params:
+                            - value
+                        type: field
+                      - params: []
+                        type: mean
+                slimit: ""
+                tags:
+                    - key: host
+                      operator: =~
+                      value: /^localhost$/
+                tz: ""
+            - refId: B
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: c
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 4e+09
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - E
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: c
+                type: threshold
+          dashboardUid: GethSSVNonProd
+          panelId: 107
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: GethSSVNonProd
+            __panelId__: "107"
+          isPaused: false
+    - orgId: 1
+      name: NV-Prysm-EG
+      folder: Prysm
+      interval: 1m
+      rules:
+        - uid: ba4e53c2-6578-4a8e-8fba-b1124a2a51da
+          title: NV-Prysm-CPU
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                editorMode: code
+                expr: (1 - avg(rate(node_cpu_seconds_total{instance=~"localhost:9100",mode="idle"}[2m])) by (instance))*100
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 39
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              relativeTimeRange:
+                from: 120
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 69
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: PrysmSSVNonProd
+          panelId: 191
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: PrysmSSVNonProd
+            __panelId__: "191"
+            description: Prysm CPU consumption Alert
+            summary: Prysm CPU consumption is {{'{{ '"$"}}values.B }}
+          isPaused: false
+        - uid: d5abe8e5-257d-405d-8450-ea59c6f05e15
+          title: NV-Prysm-Memory
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                editorMode: code
+                expr: (1 - (node_memory_MemAvailable_bytes{instance=~"localhost:9100"} / (node_memory_MemTotal_bytes{instance=~"localhost:9100"})))* 100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 10
+                intervalMs: 15000
+                legendFormat: Used%
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - I
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - J
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: PrysmSSVNonProd
+          panelId: 156
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: PrysmSSVNonProd
+            __panelId__: "156"
+            summary: RAM consumption is {{'{{ '"$"}}values.B }} %
+          isPaused: false
+        - uid: da015fb0-c139-4ec4-b32b-644f99c4ae0d
+          title: NV-Prysm-Storage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                editorMode: code
+                expr: (node_filesystem_size_bytes{instance=~'localhost:9100',fstype=~"ext.*|xfs",mountpoint !~".*pod.*"}-node_filesystem_free_bytes{instance=~'localhost:9100',fstype=~"ext.*|xfs",mountpoint !~".*pod.*"}) *100/(node_filesystem_avail_bytes {instance=~'localhost:9100',fstype=~"ext.*|xfs",mountpoint !~".*pod.*"}+(node_filesystem_size_bytes{instance=~'localhost:9100',fstype=~"ext.*|xfs",mountpoint !~".*pod.*"}-node_filesystem_free_bytes{instance=~'localhost:9100',fstype=~"ext.*|xfs",mountpoint !~".*pod.*"}))
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: PrysmSSVNonProd
+          panelId: 174
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: PrysmSSVNonProd
+            __panelId__: "174"
+            description: Disk space is used {{'{{ '"$"}}values.B }} %
+            summary: Disk Space Alert
+          isPaused: false
+        - uid: f2ba845e-0621-4c9a-b05c-864afaaee0c9
+          title: NV-Prysm-Peers
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                editorMode: code
+                expr: p2p_peer_count{state="Connected"}
+                hide: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 6
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: PrysmSSVNonProd
+            __panelId__: "34"
+            description: Prysm Peers
+            summary: Prysm peers is {{'{{ '"$"}}values.B }}
+          isPaused: false
+        - uid: f2d94130-82ad-4462-8007-7be4dbb7f254
+          title: NV-Prysm-50 slots behind
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 1800
+                to: 0
+              datasourceUid: PFEBB34579C6D1B85
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PFEBB34579C6D1B85
+                expr: beacon_clock_time_slot-beacon_head_slot
+                interval: ""
+                intervalMs: 15000
+                legendFormat: node slots behind
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 1800
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 1800
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 49
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: PrysmSSVNonProd
+          panelId: 28
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: PrysmSSVNonProd
+            __panelId__: "28"
+            summary: '{{'{{ '"$"}}values.B }} Slots behind.'
+          isPaused: false
+         - uid: ce1cb4bc-462c-4225-847c-0d4ebd3372ff
+          title: CPU Usage
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                expr: avg(1 - avg(rate(node_cpu_seconds_total{origin_prometheus=~"",job=~"node_exporter",mode="idle"}[2m])) by (instance)) * 100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall average used%
+                maxDataPoints: 43200
+                refId: A
+                step: 240
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 7
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "7"
+            description: CPU Usage is {{ $values.B }} %
+            summary: NV-Prysm-SSV-NonProd CPU Usage Alert
+          isPaused: false
+        - uid: b1d341e2-2e7f-47d2-a222-97a28101ba99
+          title: Memory Usage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                expr: (sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"} - node_memory_MemAvailable_bytes{origin_prometheus=~"",job=~"node_exporter"}) / sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"}))*100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 195
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "195"
+            description: Memory usage is {{ $values.B }} %
+            summary: NV-Prysm-SSV-NonProd Memory usage
+          isPaused: false
+        - uid: e659d834-441e-4eba-82cd-d178a2e78abc
+          title: Total Disk Usage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PF0E5ADF8F61448D4
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PF0E5ADF8F61448D4
+                expr: (sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))) *100/(sum(avg(node_filesystem_avail_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))+(sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))))
+                format: time_series
+                instant: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 197
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "197"
+            description: Disk usage is {{ $values.B }} %
+            summary: NV-Prysm-SSV-NonProd Disk usage
+          isPaused: false
+contactPoints:
+  # <int> organization ID, default = 1
+  - orgId: 1
+    # <string, required> name of the contact point
+    name: Discord
+    receivers:
+      # <string, required> unique identifier for the receiver
+      - uid: Zc8BIjL4k
+        # <string, required> type of the receiver
+        type: discord
+        # <object, required> settings for the specific receiver type
+        settings:
+         url: "https://discord.com/api/webhooks/1110864279718084628/5QDc5LdFXOw1HS9yDLzQ3d-bSdDhcUX1w1NrQIC5YAYxZ13C0DBEaGi3UoC66jKTh9Id"
+policies:
+  # <int> organization ID, default = 1
+  - orgId: 1
+    # <string> name of the contact point that should be used for this route
+    receiver: Discord
+    # <list> The labels by which incoming alerts are grouped together. For example,
+    #        multiple alerts coming in for cluster=A and alertname=LatencyHigh would
+    #        be batched into a single group.
+    #
+    #        To aggregate by all possible labels use the special value '...' as
+    #        the sole label name, for example:
+    #        group_by: ['...']
+    #        This effectively disables aggregation entirely, passing through all
+    #        alerts as-is. This is unlikely to be what you want, unless you have
+    #        a very low alert volume or your upstream notification system performs
+    #        its own grouping.
+    group_by: ['...']
+    # <list> a list of prometheus-like matchers that an alert rule has to fulfill to match the node (allowed chars
+    #        [a-zA-Z_:])
+    # matchers:
+    #   - alertname = Watchdog
+    #   - service_id_X = serviceX
+    #   - severity =~ "warning|critical"
+    # # <list> a list of grafana-like matchers that an alert rule has to fulfill to match the node
+    # object_matchers:
+    #   - ['alertname', '=', 'CPUUsage']
+    #   - ['service_id-X', '=', 'serviceX']
+    #   - ['severity', '=~', 'warning|critical']
+    # # <list> Times when the route should be muted. These must match the name of a
+    # #        mute time interval.
+    # #        Additionally, the root node cannot have any mute times.
+    # #        When a route is muted it will not send any notifications, but
+    # #        otherwise acts normally (including ending the route-matching process
+    # #        if the `continue` option is not set)
+    # mute_time_intervals:
+    #   - abc
+    # <duration> How long to initially wait to send a notification for a group
+    #            of alerts. Allows to collect more initial alerts for the same group.
+    #            (Usually ~0s to few minutes), default = 30s
+    group_wait: 30s
+    # <duration> How long to wait before sending a notification about new alerts that
+    #            are added to a group of alerts for which an initial notification has
+    #            already been sent. (Usually ~5m or more), default = 5m
+    group_interval: 5m
+    # <duration>  How long to wait before sending a notification again if it has already
+    #             been sent successfully for an alert. (Usually ~3h or more), default = 4h
+    repeat_interval: 4h
+    # <list> Zero or more child routes
+    # routes:
+    # ...
