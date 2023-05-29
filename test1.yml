@@ -1985,3 +1985,665 @@ groups:
             description: Disk usage is {{ $values.B }} %
             summary: OR-Prysm-NonProd Disk usage
           isPaused: false
+    - orgId: 1
+      name: OH-SSV-EG
+      folder: SSV
+      interval: 1m
+      rules:
+        - uid: 4d63362d-8f70-44bb-976e-8c59b4a9cdsx
+          title: CPU Usage OH-SSV
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PDB1E3CE9E11B2E44
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PDB1E3CE9E11B2E44
+                expr: avg(1 - avg(rate(node_cpu_seconds_total{origin_prometheus=~"",job=~"node_exporter",mode="idle"}[2m])) by (instance)) * 100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall average used%
+                maxDataPoints: 43200
+                refId: A
+                step: 240
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 7
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "7"
+            description: CPU Usage is {{ $values.B }} %
+            summary: OH-SSV-NonProd CPU Usage Alert
+          isPaused: false
+        - uid: c56db3ce-44bb-4b43-8f77-9a42ceaa1854
+          title: Memory Usage OH-SSV
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PDB1E3CE9E11B2E44
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PDB1E3CE9E11B2E44
+                expr: (sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"} - node_memory_MemAvailable_bytes{origin_prometheus=~"",job=~"node_exporter"}) / sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"}))*100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 195
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "195"
+            description: Memory usage is {{ $values.B }} %
+            summary: OH-SSV-NonProd Memory usage
+          isPaused: false
+        - uid: 84c1c6b9-db1a-4fe4-908f-2b9b487bx878
+          title: Total Disk Usage OH-SSV
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: PDB1E3CE9E11B2E44
+              model:
+                datasource:
+                    type: prometheus
+                    uid: PDB1E3CE9E11B2E44
+                expr: (sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))) *100/(sum(avg(node_filesystem_avail_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))+(sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))))
+                format: time_series
+                instant: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 197
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "197"
+            description: Disk usage is {{ $values.B }} %
+            summary: OH-SSV-NonProd Disk usage
+          isPaused: false
+    - orgId: 1
+      name: OH-Prysm-EG
+      folder: Prysm
+      interval: 1m
+      rules:
+        - uid: c6f79514-a3d6-4b83-a2bb-71692c642950
+          title: CPU Usage OH-PRYSM
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: P4FEAF34A6BF337FB
+              model:
+                datasource:
+                    type: prometheus
+                    uid: P4FEAF34A6BF337FB
+                expr: avg(1 - avg(rate(node_cpu_seconds_total{origin_prometheus=~"",job=~"node_exporter",mode="idle"}[2m])) by (instance)) * 100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall average used%
+                maxDataPoints: 43200
+                refId: A
+                step: 240
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 7
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "7"
+            description: CPU Usage is {{ $values.B }} %
+            summary: OH-Prysm-NonProd CPU Usage Alert
+          isPaused: false
+        - uid: ccd1b86b-24d4-4f28-aaab-58cb06242188
+          title: Memory Usage OH-PRYSM
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: P4FEAF34A6BF337FB
+              model:
+                datasource:
+                    type: prometheus
+                    uid: P4FEAF34A6BF337FB
+                expr: (sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"} - node_memory_MemAvailable_bytes{origin_prometheus=~"",job=~"node_exporter"}) / sum(node_memory_MemTotal_bytes{origin_prometheus=~"",job=~"node_exporter"}))*100
+                format: time_series
+                hide: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 70
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 195
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "195"
+            description: Memory usage is {{ $values.B }} %
+            summary: OH-Prysm-NonProd Memory usage
+          isPaused: false
+        - uid: 3e73a8ec-3322-481f-bc4f-0a157f8f2c54
+          title: Total Disk Usage OH-PRYSM
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: P4FEAF34A6BF337FB
+              model:
+                datasource:
+                    type: prometheus
+                    uid: P4FEAF34A6BF337FB
+                expr: (sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))) *100/(sum(avg(node_filesystem_avail_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))+(sum(avg(node_filesystem_size_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance)) - sum(avg(node_filesystem_free_bytes{origin_prometheus=~"",job=~"node_exporter",fstype=~"xfs|ext.*"})by(device,instance))))
+                format: time_series
+                instant: false
+                interval: 30m
+                intervalFactor: 1
+                intervalMs: 15000
+                legendFormat: Overall Average Used%
+                maxDataPoints: 43200
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 43200
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 80
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - D
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: OtherDashboardsNonProd
+          panelId: 197
+          noDataState: NoData
+          execErrState: Error
+          for: 5m
+          annotations:
+            __dashboardUid__: OtherDashboardsNonProd
+            __panelId__: "197"
+            description: Disk usage is {{ $values.B }} %
+            summary: OH-Prysm-NonProd Disk usage
+          isPaused: false
